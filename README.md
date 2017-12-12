@@ -1,9 +1,9 @@
-# The full JavaScript & ES6 (including ES7 and React) training
-A basic practice of Javascript with ES6, ES7 and React.
+# Progressive Web Apps - Complete Guide
+This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - Complete Guide" course on udemy.com.
 
-## Setup project
-* npm install
+# How to Use
+You need [Node.js](https://nodejs.org) installed on your machine. Simply download the installer from [nodejs.org](https://nodejs.org) and go through the installation steps.
 
-## Deploy project
-* npm run build
-* npm run start
+Once Node.js is installed, open your command prompt or terminal and **navigate into this project folder**. There, run `npm install` to install all required dependencies.
+
+Finally, run `npm start` to start the development server and visit [localhost:8080](http://localhost:8080) to see the running application.
