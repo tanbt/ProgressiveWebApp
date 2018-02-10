@@ -17,3 +17,15 @@ self.addEventListener('activate', function(event) {
   return self.clients.claim();
 });
 
+/**
+ * `Fetch` is triggered when a page (or a JS code) sends out a request for resource
+ */
+self.addEventListener('fetch', function(event) {
+  console.log("[SW] Fetching something...", event);
+
+  // don't respond anything, page not found
+  //event.respondWith(null);
+
+  // pass the request to browser to get data and fetch that data as a promise
+  event.respondWith(fetch(event.request));
+});
