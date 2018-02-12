@@ -15,3 +15,16 @@ window.addEventListener('beforeinstallprompt', function(event) {
   deferredPrompt = event;
   return false;
 });
+
+var promise = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    resolve('The request is resolved after 3s.');
+  }, 3000)
+});
+promise.then(function(data) {
+  return "Processed data: " + data;
+}).then(function(newData) {
+  console.log(newData);
+});
+
+console.log("This line is executed non-blocking.");
