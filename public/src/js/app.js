@@ -1,4 +1,8 @@
 // check if `serviceWorker` property is available in navigator (browser object)
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/sw.js', {scope: '/'})
