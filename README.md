@@ -13,3 +13,6 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * Setting up [Remote Debugging on Chrome](https://developers.google.com/web/tools/chrome-devtools/remote-debugging/)
 * Getting that [Web App Install Banner](https://developers.google.com/web/fundamentals/engage-and-retain/app-install-banners/)
 * Getting Started with [Service Workers](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers)
+
+## External demo resourece
+* [API resource](https://httpbin.org/)

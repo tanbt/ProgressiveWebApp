@@ -5,6 +5,9 @@ if ('serviceWorker' in navigator) {
     .then(function () {
       //this log could be render before registration finishes (non-blocking)
       console.log('Service Worker registered!');
+    })
+    .catch(function(err) {
+      console.log(err);
     });
 }
 
@@ -34,3 +37,18 @@ promise.then(function(data) {
 });
 
 console.log("This line is executed non-blocking.");
+
+fetch('https://httpbin.org/ip')
+  .then(function(response) {
+    console.log(response);
+
+    //`.json()` is a mapper, extracts body data from *fetch* and convert to json
+    //  it's return a promise (async task)
+    return response.json();
+  })
+  .then(function(body) {
+    console.log(body);
+  })
+  .catch(function(err) {
+    console.log("Your error: " + err);
+  });
