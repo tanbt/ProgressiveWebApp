@@ -42,11 +42,6 @@ self.addEventListener('activate', function(event) {
  * `Fetch` is triggered when a page (or a JS code) sends out a request for resource
  */
 self.addEventListener('fetch', function(event) {
-  //console.log("[SW] Fetching something...", event);
-
-  // don't respond anything, page not found
-  //event.respondWith(null);
-
   // pass the request to browser to get data and fetch that data as a promise
   event.respondWith(
     caches.match(event.request)
@@ -54,7 +49,15 @@ self.addEventListener('fetch', function(event) {
         if (response) {
           return response; // return value from cache, not send out to network
         } else {
-          return fetch(event.request);  // cache is null, send request to network
+          return fetch(event.request)    // cache is null, send request to network
+            .then(function(onlineResponse) {
+              caches.open('dynamic-cache')
+                .then(function(cache) {
+                  // store a clone of Response because Response is only consumed ONCE.
+                  cache.put(event.request.url, onlineResponse.clone());
+                  return onlineResponse;
+                })
+            });
         }
       })
   );
