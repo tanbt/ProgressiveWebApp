@@ -1,6 +1,9 @@
 // Service Worker must be placed in root folder to its scope can access all resources
 // SW only works in HTTPS
 
+var CACHE_STATIC_NAME = 'static-v4';
+var CACHE_DYNAMIC_NAME = 'dynamic-v4';
+
 /**
  * `Install` event is called at first registration
  *  or after sw.js is changed and the page is refreshed.
@@ -9,7 +12,7 @@ self.addEventListener('install', function(event) {
   console.log('[SW] Installing Service Worker and Pre-caching app shell...', event);
 
   event.waitUntil(
-    caches.open('pre-cache').then(function(cache) {
+    caches.open(CACHE_STATIC_NAME).then(function(cache) {
       // request to the file, download and store
       cache.addAll([
         '/',
@@ -35,6 +38,20 @@ self.addEventListener('install', function(event) {
  */
 self.addEventListener('activate', function(event) {
   console.log('[SW] Activating Service Worker...', event);
+  event.waitUntil(
+    caches.keys()
+      .then(function(keyList){
+        // take an array of Promises when they're all finished.
+        return Promise.all(
+          keyList.map(function(key) { //for each key in the list
+            if (key !== CACHE_STATIC_NAME && key !== CACHE_DYNAMIC_NAME){
+              console.log('[SW] Removing old cache: ', key);
+              return caches.delete(key);
+            }
+          }
+        )); 
+      })
+  );
   return self.clients.claim();
 });
 
@@ -51,12 +68,15 @@ self.addEventListener('fetch', function(event) {
         } else {
           return fetch(event.request)    // cache is null, send request to network
             .then(function(onlineResponse) {
-              caches.open('dynamic-cache')
+              caches.open(CACHE_DYNAMIC_NAME)
                 .then(function(cache) {
                   // store a clone of Response because Response is only consumed ONCE.
                   cache.put(event.request.url, onlineResponse.clone());
                   return onlineResponse;
                 })
+            })
+            .catch(function (err) {
+
             });
         }
       })
