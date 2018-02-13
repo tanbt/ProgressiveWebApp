@@ -21,7 +21,7 @@ self.addEventListener('activate', function(event) {
  * `Fetch` is triggered when a page (or a JS code) sends out a request for resource
  */
 self.addEventListener('fetch', function(event) {
-  console.log("[SW] Fetching something...", event);
+  //console.log("[SW] Fetching something...", event);
 
   // don't respond anything, page not found
   //event.respondWith(null);
