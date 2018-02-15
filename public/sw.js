@@ -59,10 +59,11 @@ self.addEventListener('activate', function(event) {
 /**
  * `Fetch` is triggered when a page (or a JS code) sends out a request for resource
  */
+/*
 self.addEventListener('fetch', function(event) {
   // pass the request to browser to get data and fetch that data as a promise
   event.respondWith(
-    caches.match(event.request)
+    caches.match(event.request) //auto-match by request object
       .then(function(response) {
         if (response) {
           return response; // return value from cache, not send out to network
@@ -79,10 +80,30 @@ self.addEventListener('fetch', function(event) {
             .catch(function (err) {
               return caches.open(CACHE_STATIC_NAME)
               .then(function(cache) {
-                return cache.match('/offline.html');
+                return cache.match('/offline.html');  //match to a fixed url
               })
             });
         }
       })
   );
+});
+*/
+/**
+ * Strategy: Network falling back to cache
+ * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
+ */
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    fetch(event.request)
+    .then(function(response) { 
+      return caches.open(CACHE_DYNAMIC_NAME)  //this "then" must always return
+        .then(function(cache) {
+          cache.put(event.request.url, response.clone());
+          return response;
+        })
+    })
+    .catch(function(err) {
+      return caches.match(event.request);
+    })
+  )
 });
