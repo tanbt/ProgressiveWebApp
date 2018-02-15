@@ -63,7 +63,7 @@ fetch('https://httpbin.org/get')
   .then(function(data) {
     createCard();
   });
-
+/*
   function onSaveButtonClicked(event) {
     if ('caches' in window) {
       caches.open('user-requested')
@@ -75,3 +75,4 @@ fetch('https://httpbin.org/get')
       console.log('Your browser doesn\'t support caching');
     }
   }
+*/

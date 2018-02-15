@@ -17,6 +17,7 @@ self.addEventListener('install', function(event) {
       cache.addAll([
         '/',
         '/index.html',
+        '/offline.html',
         '/src/js/app.js',
         '/src/js/feed.js',
         '/src/js/material.min.js',
@@ -71,12 +72,15 @@ self.addEventListener('fetch', function(event) {
               caches.open(CACHE_DYNAMIC_NAME)
                 .then(function(cache) {
                   // store a clone of Response because Response is only consumed ONCE.
-                  // cache.put(event.request.url, onlineResponse.clone());
+                  cache.put(event.request.url, onlineResponse.clone());
                   return onlineResponse;
                 })
             })
             .catch(function (err) {
-
+              return caches.open(CACHE_STATIC_NAME)
+              .then(function(cache) {
+                return cache.match('/offline.html');
+              })
             });
         }
       })
