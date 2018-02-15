@@ -71,7 +71,7 @@ self.addEventListener('fetch', function(event) {
               caches.open(CACHE_DYNAMIC_NAME)
                 .then(function(cache) {
                   // store a clone of Response because Response is only consumed ONCE.
-                  cache.put(event.request.url, onlineResponse.clone());
+                  // cache.put(event.request.url, onlineResponse.clone());
                   return onlineResponse;
                 })
             })
