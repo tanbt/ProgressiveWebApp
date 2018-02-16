@@ -65,6 +65,18 @@ function createCard() {
 var url = 'https://httpbin.org/get';
 var networkDataReceived = false;
 
+
+fetch('https://httpbin.org/get')
+  .then(function(res) {
+    return res.json();
+  })
+  .then(function(data) {
+    clearCards();
+    createCard();
+    var networkDataReceived = true;
+    console.log('From web: ', data);
+  });
+
 if ('caches' in window) {
   caches.match(url)
     .then(function(response) {
@@ -73,28 +85,15 @@ if ('caches' in window) {
       }
     })
     .then(function(data) {
-      console.log('From cache: ', data);
       if (!networkDataReceived) {
+        console.log('From cache: ', data);
         clearCards();
         createCard();
-      } else {
-        console.log('Ignored cache data.');
       }
     })
 } else {
   console.log('Your browser doesn\'t support caching');
 }
-
-fetch('https://httpbin.org/get')
-  .then(function(res) {
-    return res.json();
-  })
-  .then(function(data) {
-    var networkDataReceived = false;
-    console.log('From web: ', data);
-    clearCards();
-    createCard();
-  });
 
 /*
   function onSaveButtonClicked(event) {

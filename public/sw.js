@@ -57,8 +57,8 @@ self.addEventListener('activate', function(event) {
 });
 
 /**
+ * Strategy: Cache falling back to network
  * `Fetch` is triggered when a page (or a JS code) sends out a request for resource
- */
 /*
 self.addEventListener('fetch', function(event) {
   // pass the request to browser to get data and fetch that data as a promise
@@ -88,11 +88,13 @@ self.addEventListener('fetch', function(event) {
   );
 });
 */
+
 /**
  * Strategy: Network falling back to cache
  * https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
  */
-self.addEventListener('fetch', function(event) {
+/*
+ self.addEventListener('fetch', function(event) {
   event.respondWith(
     fetch(event.request)
     .then(function(response) { 
@@ -104,6 +106,25 @@ self.addEventListener('fetch', function(event) {
     })
     .catch(function(err) {
       return caches.match(event.request);
+    })
+  )
+});
+*/
+
+
+
+/**
+ * Strategy: Cache then network then re-dynamic-cache
+ */
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.open(CACHE_DYNAMIC_NAME)
+    .then(function(cache){
+      return fetch(event.request)
+      .then(function(res) {
+        cache.put(event.request, res.clone());
+        return res;
+      })
     })
   )
 });
