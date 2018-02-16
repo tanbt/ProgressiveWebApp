@@ -155,9 +155,10 @@ self.addEventListener('fetch', function(event) {
                 return caches.open(CACHE_STATIC_NAME)
                 .then(function(cache) {
                   // only return offline.html for not-app-shell pages.
-                  if (event.request.url.indexOf("/help" > -1)) {
+                  if (event.request.headers.get('accept').includes('text/html')) {
                     return cache.match('/offline.html');  //return to a fixed url
                   }
+                  // can return some dummy images or css also
                 })
               });
           }
