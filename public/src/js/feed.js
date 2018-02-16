@@ -27,6 +27,12 @@ shareImageButton.addEventListener('click', openCreatePostModal);
 
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
+function clearCards() {
+  while(sharedMomentsArea.hasChildNodes()){
+    sharedMomentsArea.removeChild(sharedMomentsArea.lastChild);
+  }
+}
+
 function createCard() {
   var cardWrapper = document.createElement('div');
   cardWrapper.className = 'shared-moment-card mdl-card mdl-shadow--2dp';
@@ -56,13 +62,40 @@ function createCard() {
   sharedMomentsArea.appendChild(cardWrapper);
 }
 
+var url = 'https://httpbin.org/get';
+var networkDataReceived = false;
+
+if ('caches' in window) {
+  caches.match(url)
+    .then(function(response) {
+      if (response) {
+        return response.json();
+      }
+    })
+    .then(function(data) {
+      console.log('From cache: ', data);
+      if (!networkDataReceived) {
+        clearCards();
+        createCard();
+      } else {
+        console.log('Ignored cache data.');
+      }
+    })
+} else {
+  console.log('Your browser doesn\'t support caching');
+}
+
 fetch('https://httpbin.org/get')
   .then(function(res) {
     return res.json();
   })
   .then(function(data) {
+    var networkDataReceived = false;
+    console.log('From web: ', data);
+    clearCards();
     createCard();
   });
+
 /*
   function onSaveButtonClicked(event) {
     if ('caches' in window) {
