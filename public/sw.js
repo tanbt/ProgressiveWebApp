@@ -115,16 +115,50 @@ self.addEventListener('fetch', function(event) {
 
 /**
  * Strategy: Cache then network then re-dynamic-cache
+ *  with offline-caching support
  */
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.open(CACHE_DYNAMIC_NAME)
-    .then(function(cache){
-      return fetch(event.request)
-      .then(function(res) {
-        cache.put(event.request, res.clone());
-        return res;
+
+  // ONLY for the url which uses Cache-then-network strategy
+  var url = 'https://httpbin.org/get';
+  if (event.request.url.indexOf(url) > -1) {
+    event.respondWith(
+      caches.open(CACHE_DYNAMIC_NAME)
+      .then(function(cache){
+        return fetch(event.request)
+        .then(function(res) {
+          cache.put(event.request, res.clone());
+          return res;
+        })
+        .catch(function(err){
+          console.log('[SW] Cannot update cache for: ' + url);
+        })
       })
-    })
-  )
+    )
+  } else {  // OTHERWISE, use normal dynamic cache with offline page
+    event.respondWith(
+      caches.match(event.request) //auto-match by request object
+        .then(function(response) {
+          if (response) {
+            return response; // return value from cache, not send out to network
+          } else {
+            return fetch(event.request)    // cache is null, send request to network
+              .then(function(onlineResponse) {
+                caches.open(CACHE_DYNAMIC_NAME)
+                  .then(function(cache) {
+                    // store a clone of Response because Response is only consumed ONCE.
+                    cache.put(event.request.url, onlineResponse.clone());
+                    return onlineResponse;
+                  })
+              })
+              .catch(function (err) {
+                return caches.open(CACHE_STATIC_NAME)
+                .then(function(cache) {
+                  return cache.match('/offline.html');  //match to a fixed url
+                })
+              });
+          }
+        })
+    );
+  }
 });

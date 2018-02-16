@@ -65,8 +65,7 @@ function createCard() {
 var url = 'https://httpbin.org/get';
 var networkDataReceived = false;
 
-
-fetch('https://httpbin.org/get')
+fetch(url)
   .then(function(res) {
     return res.json();
   })
@@ -75,6 +74,9 @@ fetch('https://httpbin.org/get')
     createCard();
     var networkDataReceived = true;
     console.log('From web: ', data);
+  })
+  .catch(function(err) {
+    console.log('[APP] Cannot reach out the Internet.');
   });
 
 if ('caches' in window) {
