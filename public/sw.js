@@ -3,6 +3,19 @@
 
 var CACHE_STATIC_NAME = 'static-v4';
 var CACHE_DYNAMIC_NAME = 'dynamic-v4';
+var MAX_CACHE_ITEMS = 10;   // How about max cache size?
+
+function trimCache(cacheName, maxItems) {
+  caches.open(cacheName)
+    .then(function(cache) {
+      return cache.keys() .then(function(keys) {
+        if (keys.length > maxItems) {
+          cache.delete(keys[0])
+            .then(trimCache(cacheName, maxItems));
+        }
+      })
+    })
+}
 
 /**
  * `Install` event is called at first registration
@@ -127,6 +140,7 @@ self.addEventListener('fetch', function(event) {
       .then(function(cache){
         return fetch(event.request)
         .then(function(res) {
+          trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
           cache.put(event.request, res.clone());
           return res;
         })
