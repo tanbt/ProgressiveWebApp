@@ -154,7 +154,10 @@ self.addEventListener('fetch', function(event) {
               .catch(function (err) {
                 return caches.open(CACHE_STATIC_NAME)
                 .then(function(cache) {
-                  return cache.match('/offline.html');  //match to a fixed url
+                  // only return offline.html for not-app-shell pages.
+                  if (event.request.url.indexOf("/help" > -1)) {
+                    return cache.match('/offline.html');  //return to a fixed url
+                  }
                 })
               });
           }
