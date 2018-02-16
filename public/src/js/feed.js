@@ -110,3 +110,13 @@ if ('caches' in window) {
     }
   }
 */
+
+// Test this function by calling in Console
+function unregisterServiceWorker() {
+  navigator.serviceWorker.getRegistrations()
+    .then(function(registrations){
+      registrations.forEach(function(sw) {
+        sw.unregister();
+      });
+    })
+}
