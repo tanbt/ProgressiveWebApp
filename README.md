@@ -16,6 +16,7 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * Getting Started with [Service Workers](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers)
 * Web API [Cache](https://developer.mozilla.org/en-US/docs/Web/API/Cache)
 * [Caching strategies](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#the_cache_machine_-_when_to_store_resources)
+* [Wrap IndexDB into Promise](https://github.com/jakearchibald/idb)
 
 ## External demo resourece
 * [API resource](https://httpbin.org/)

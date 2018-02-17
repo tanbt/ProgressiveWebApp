@@ -1,9 +1,17 @@
 // Service Worker must be placed in root folder to its scope can access all resources
 // SW only works in HTTPS
 
+importScripts('/src/js/idb.js');
+
 var CACHE_STATIC_NAME = 'static-v4';
 var CACHE_DYNAMIC_NAME = 'dynamic-v4';
 var MAX_CACHE_ITEMS = 10;   // How about max cache size?
+
+var dbPromise = idb.open('pwagram-posts-store', 1, function(db) {
+  if (!db.objectStoreNames.contains('posts')) { //ObjectStore is like Collection/Table
+    db.createObjectStore('posts', {keyPath: 'id'}); // 'id' is like primary key
+  }
+});
 
 function trimCache(cacheName, maxItems) {
   caches.open(cacheName)
@@ -36,6 +44,7 @@ self.addEventListener('install', function(event) {
         '/src/js/material.min.js',
         '/src/js/promise.js',
         '/src/js/fetch.js',
+        '/src/js/idb.js',
         '/src/css/app.css',
         '/src/css/feed.css',
         '/src/css/material.indigo-pink.min.css',
@@ -140,8 +149,20 @@ self.addEventListener('fetch', function(event) {
       .then(function(cache){
         return fetch(event.request)
         .then(function(res) {
-          trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
-          cache.put(event.request, res.clone());
+          //trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
+          //cache.put(event.request, res.clone());
+          var clonedRes = res.clone();
+          clonedRes.json()
+            .then(function(data) {
+              for (var key in data) {
+                dbPromise.then(function(db) {
+                  var trans = db.transaction('posts', 'readwrite');
+                  var store = trans.objectStore('posts');
+                  store.put(data[key]);
+                  return trans.complete;
+                })
+              }
+            });
           return res;
         })
         .catch(function(err){

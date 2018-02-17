@@ -69,7 +69,7 @@ function updateUI(data){
 }
 function convertDataObjectToArray(jsonObject) {
   var dataArray=[];
-  for (var key in jsonObject) {
+  for (var key in jsonObject) { //loop through properties of an object
     dataArray.push(jsonObject[key])
   }
   return dataArray;
@@ -100,7 +100,7 @@ if ('caches' in window) {
       }
     })
     .then(function(data) {
-      if (!networkDataReceived) {
+      if (!networkDataReceived && data != null) {
         console.log('From cache: ', data);
         clearCards();
         updateUI(convertDataObjectToArray(data));
