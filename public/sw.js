@@ -133,7 +133,7 @@ self.addEventListener('fetch', function(event) {
 self.addEventListener('fetch', function(event) {
 
   // ONLY for the url which uses Cache-then-network strategy
-  var url = 'https://httpbin.org/get';
+  var url = 'https://pwagram-45678.firebaseio.com/posts.json';
   if (event.request.url.indexOf(url) > -1) {
     event.respondWith(
       caches.open(CACHE_DYNAMIC_NAME)
