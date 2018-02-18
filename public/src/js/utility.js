@@ -30,3 +30,23 @@ function clearAllData(storeName) {
         return tx.complete;
     })
 }
+
+/**
+ * Remove an item in IndexedDB
+ * 
+ * @param storeName Collection name
+ * @param id Id of the item
+ * @example
+ *      in console of browser: removeItemById('posts', 'post-1');
+ */
+function removeItemById(storeName, id) {
+    return dbPromise.then(function(db) {
+        var tx = db.transaction(storeName, 'readwrite');
+        var store = tx.objectStore(storeName);
+        store.delete(id);
+        return tx.complete;
+    })
+    .then(function() {
+        console.log('Item deleted: ' + id);
+    })
+}
