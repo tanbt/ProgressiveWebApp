@@ -4,7 +4,10 @@ var closeCreatePostModalButton = document.querySelector('#close-create-post-moda
 var sharedMomentsArea = document.querySelector('#shared-moments');
 
 function openCreatePostModal() {
-  createPostArea.style.display = 'block';
+  setTimeout(function() {
+    createPostArea.style.transform = 'translateY(0)';
+    createPostArea.style.transittion = 'transform 0.3s';
+  }, 1);
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function(choiceResult) {
@@ -20,7 +23,8 @@ function openCreatePostModal() {
 }
 
 function closeCreatePostModal() {
-  createPostArea.style.display = 'none';
+  createPostArea.style.transform = 'translateY(100vh)';
+  createPostArea.style.transittion = 'transform 0.2s';
 }
 
 shareImageButton.addEventListener('click', openCreatePostModal);
