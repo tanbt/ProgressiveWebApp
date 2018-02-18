@@ -17,6 +17,7 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * Web API [Cache](https://developer.mozilla.org/en-US/docs/Web/API/Cache)
 * [Caching strategies](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#the_cache_machine_-_when_to_store_resources)
 * [Wrap IndexDB into Promise](https://github.com/jakearchibald/idb)
+* [Loading responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 ## External demo resourece
 * [API resource](https://httpbin.org/)
