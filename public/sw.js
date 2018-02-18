@@ -148,12 +148,15 @@ self.addEventListener('fetch', function(event) {
           //trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
           //cache.put(event.request, res.clone());
           var clonedRes = res.clone();
-          clonedRes.json()
+          clearAllData('posts')
+            .then(function(){
+              return clonedRes.json();
+            })
             .then(function(data) {
               for (var key in data) {
                 writeData('posts', data[key]);
               }
-            });
+            })
           return res;
         })
         .catch(function(err){

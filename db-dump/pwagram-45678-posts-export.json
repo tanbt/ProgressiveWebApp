@@ -1,0 +1,20 @@
+{
+  "first-post" : {
+    "id" : "post-1",
+    "image" : "https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/sf-boat.jpg?alt=media&token=50453c2f-234b-4ccf-8e2f-4ecc02cae8a1",
+    "location" : "In San Francisco",
+    "title" : "Awesome trip to SF!"
+  },
+  "second-post" : {
+    "id" : "post-2",
+    "image" : "https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/my-dog.jpg?alt=media&token=c1a8f283-e807-4acf-80c8-32b307a1e4f1",
+    "location" : "In Viet Nam",
+    "title" : "Handsome my dog"
+  },
+    "third-post" : {
+    "id" : "post-3",
+    "image" : "https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/my-dog.jpg?alt=media&token=c1a8f283-e807-4acf-80c8-32b307a1e4f1",
+    "location" : "In Viet Nam (1)",
+    "title" : "Handsome my dog (1)"
+  }
+}
