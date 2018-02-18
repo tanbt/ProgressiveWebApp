@@ -2,16 +2,11 @@
 // SW only works in HTTPS
 
 importScripts('/src/js/idb.js');
+importScripts('/src/js/utility.js');
 
 var CACHE_STATIC_NAME = 'static-v4';
 var CACHE_DYNAMIC_NAME = 'dynamic-v4';
 var MAX_CACHE_ITEMS = 10;   // How about max cache size?
-
-var dbPromise = idb.open('pwagram-posts-store', 1, function(db) {
-  if (!db.objectStoreNames.contains('posts')) { //ObjectStore is like Collection/Table
-    db.createObjectStore('posts', {keyPath: 'id'}); // 'id' is like primary key
-  }
-});
 
 function trimCache(cacheName, maxItems) {
   caches.open(cacheName)
@@ -155,12 +150,7 @@ self.addEventListener('fetch', function(event) {
           clonedRes.json()
             .then(function(data) {
               for (var key in data) {
-                dbPromise.then(function(db) {
-                  var trans = db.transaction('posts', 'readwrite');
-                  var store = trans.objectStore('posts');
-                  store.put(data[key]);
-                  return trans.complete;
-                })
+                writeData('posts', data[key]);
               }
             });
           return res;
