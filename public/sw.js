@@ -40,6 +40,7 @@ self.addEventListener('install', function(event) {
         '/src/js/promise.js',
         '/src/js/fetch.js',
         '/src/js/idb.js',
+        '/src/js/utility.js',
         '/src/css/app.css',
         '/src/css/feed.css',
         '/src/css/material.indigo-pink.min.css',

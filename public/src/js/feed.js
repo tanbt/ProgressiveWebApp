@@ -92,22 +92,14 @@ fetch(url)
     console.log('[APP] Cannot reach out the Internet.');
   });
 
-if ('caches' in window) {
-  caches.match(url)
-    .then(function(response) {
-      if (response) {
-        return response.json();
-      }
-    })
+if ('indexedDB' in window) {
+  readAllData('posts')
     .then(function(data) {
-      if (!networkDataReceived && data != null) {
-        console.log('From cache: ', data);
-        clearCards();
-        updateUI(convertDataObjectToArray(data));
+      if (!networkDataReceived) {
+        console.log('From indexedDB', data);
+        updateUI(data);
       }
     })
-} else {
-  console.log('Your browser doesn\'t support caching');
 }
 
 /*

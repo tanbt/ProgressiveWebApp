@@ -12,3 +12,12 @@ function writeData(storeName, data) {
         return trans.complete;
       })
 }
+
+function readAllData(storeName) {
+    return dbPromise
+        .then(function(db) {
+            var trans = db.transaction(storeName, 'readonly');
+            var store = trans.objectStore(storeName)
+            return store.getAll();  //don't care if transaction is complete or not
+        });
+}
