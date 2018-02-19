@@ -153,9 +153,9 @@ form.addEventListener('submit', function(event) {
             return sw.sync.register('sync-new-post');  // id of Sync event
           })
           .then(function() {
-            var snackBackContainer = document.querySelector('#confirmation-toast');
+            var snackBarContainer = document.querySelector('#confirmation-toast');
             var data = {message: 'Your Post was saved for syncing.'};
-            snackBackContainer.MaterialSnackbar.showSnackbar(data);
+            snackBarContainer.MaterialSnackbar.showSnackbar(data);
           })
           .catch(function(err) {
             console.log(err)

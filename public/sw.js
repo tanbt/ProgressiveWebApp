@@ -4,8 +4,8 @@
 importScripts('/src/js/idb.js');
 importScripts('/src/js/utility.js');
 
-var CACHE_STATIC_NAME = 'static-v4';
-var CACHE_DYNAMIC_NAME = 'dynamic-v4';
+var CACHE_STATIC_NAME = 'static-v6';
+var CACHE_DYNAMIC_NAME = 'dynamic-v6';
 var MAX_CACHE_ITEMS = 10;   // How about max cache size?
 
 function trimCache(cacheName, maxItems) {
@@ -191,6 +191,46 @@ self.addEventListener('fetch', function(event) {
                 })
               });
           }
+        })
+    );
+  }
+});
+
+/**
+ * Trigger when the connection is re-established
+ *  or when a 'sync' is registered
+ */
+self.addEventListener('sync', function(event) {
+  console.log('[SW] Background syncing', event);
+  if (event.tag === 'sync-new-post') {
+    console.log('[SW] Syncing new post...');
+    event.waitUntil(
+      readAllData('sync-posts')
+        .then(function(data) {
+          data.forEach(dt => {
+            fetch('https://pwagram-45678.firebaseio.com/posts.json', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                id: dt.id,
+                title: dt.title,
+                location: dt.location,
+                image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/my-dog.jpg?alt=media&token=c1a8f283-e807-4acf-80c8-32b307a1e4f1'
+              })
+            })
+            .then(function(res) {
+              console.log('Sent data: ', res);
+              if (res.ok) {
+                removeItemById('sync-posts', dt.id);
+              }
+            })
+            .catch(function(err){
+              console.log('Error while sending data: ', err);
+            })
+          });
         })
     );
   }
