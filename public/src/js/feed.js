@@ -140,5 +140,48 @@ form.addEventListener('submit', function(event) {
   }
 
   closeCreatePostModal();
-
+  if ('serviceWorker' in navigator && 'SyncManager' in window) {
+    navigator.serviceWorker.ready
+      .then(function(sw) {
+        var post = {
+          id: new Date().toISOString(),
+          title: titleInput.value,
+          location: locationInput.value,
+        };
+        writeData('sync-posts', post)
+          .then(function(){
+            return sw.sync.register('sync-new-post');  // id of Sync event
+          })
+          .then(function() {
+            var snackBackContainer = document.querySelector('#confirmation-toast');
+            var data = {message: 'Your Post was saved for syncing.'};
+            snackBackContainer.MaterialSnackbar.showSnackbar(data);
+          })
+          .catch(function(err) {
+            console.log(err)
+          });
+      })
+  } else {
+    sendData(); // directly send data to backend
+  }
 });
+
+function sendData() {
+  fetch('https://pwagram-45678.firebaseio.com/posts.json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      id: new Date().toISOString(),
+        title: titleInput.value,
+        location: locationInput.value,
+        image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/my-dog.jpg?alt=media&token=c1a8f283-e807-4acf-80c8-32b307a1e4f1'
+    })
+  })
+  .then(function(res) {
+    console.log('Sent data: ', res);
+    updateUI();
+  })
+}

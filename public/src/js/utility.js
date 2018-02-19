@@ -2,6 +2,9 @@ var dbPromise = idb.open('pwagram-posts-store', 1, function(db) {
     if (!db.objectStoreNames.contains('posts')) { //ObjectStore is like Collection/Table
         db.createObjectStore('posts', {keyPath: 'id'}); // 'id' is like primary key
     }
+    if (!db.objectStoreNames.contains('sync-posts')) { //ObjectStore is like Collection/Table
+        db.createObjectStore('sync-posts', {keyPath: 'id'}); // 'id' is like primary key
+    }
 });
 
 function writeData(storeName, data) {
