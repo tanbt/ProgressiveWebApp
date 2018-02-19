@@ -167,7 +167,7 @@ form.addEventListener('submit', function(event) {
 });
 
 function sendData() {
-  fetch('https://pwagram-45678.firebaseio.com/posts.json', {
+  fetch('https://us-central1-pwagram-45678.cloudfunctions.net/storePostData', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

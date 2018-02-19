@@ -18,6 +18,13 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * [Caching strategies](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#the_cache_machine_-_when_to_store_resources)
 * [Wrap IndexDB into Promise](https://github.com/jakearchibald/idb)
 * [Loading responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+* [Firebase Hosting](https://firebase.google.com/docs/hosting/deploying)
+
+## Troubleshooting
+* Cannot install npm because of permision of writing cache
+** MacOS: sudo chown -R root /cache/path
+* Cannot run *firebase deploy* because of *$RESOURCE_DIR*
+** The path to project location contains special characters (e.g. whitespace)
 
 ## External demo resourece
 * [API resource](https://httpbin.org/)
