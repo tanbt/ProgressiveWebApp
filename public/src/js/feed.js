@@ -2,6 +2,9 @@ var shareImageButton = document.querySelector('#share-image-button');
 var createPostArea = document.querySelector('#create-post');
 var closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 var sharedMomentsArea = document.querySelector('#shared-moments');
+var form = document.querySelector('form');  // the only form
+var titleInput = document.querySelector('#title');
+var locationInput = document.querySelector('#location');
 
 function openCreatePostModal() {
   setTimeout(function() {
@@ -128,3 +131,14 @@ function unregisterServiceWorker() {
       });
     })
 }
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault(); // don't send data to server
+  if (titleInput.value.trim() === '' || locationInput.value.trim() === '') {
+    alert('Please enter valid data.')
+    return;
+  }
+
+  closeCreatePostModal();
+
+});
