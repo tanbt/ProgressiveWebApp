@@ -39,7 +39,15 @@ function askForNotificationPermission() {
     if (result !== 'granted') {
       console.log('No notification permission granted!');
     } else {
-      // Hibe button if necessary
+      //todo: Hibe button if necessary
+      displayConfirmNotification();
     }
   });
+}
+
+function displayConfirmNotification() {
+  var options = {
+      body: 'You successfully subscribed to our Notification Service'
+  };
+  new Notification('Successfully subscribed!', options);
 }
