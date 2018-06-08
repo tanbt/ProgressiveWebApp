@@ -1,3 +1,5 @@
+var enableNotificationButtons = document.querySelectorAll('.enable-notifications');
+
 // check if `serviceWorker` property is available in navigator (browser object)
 if (!window.Promise) {
   window.Promise = Promise;
@@ -22,3 +24,22 @@ window.addEventListener('beforeinstallprompt', function(event) {
   deferredPrompt = event;
   return false;
 });
+
+// work with notification WebAPI
+if ('Notification' in window) {
+  enableNotificationButtons.forEach(function(btn) {
+    btn.style.display='inline-block';
+    btn.addEventListener('click', askForNotificationPermission);
+  });
+}
+
+function askForNotificationPermission() {
+  Notification.requestPermission(function(result) {
+    console.log('User choice: ', result);
+    if (result !== 'granted') {
+      console.log('No notification permission granted!');
+    } else {
+      // Hibe button if necessary
+    }
+  });
+}
