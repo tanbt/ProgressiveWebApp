@@ -46,8 +46,13 @@ function askForNotificationPermission() {
 }
 
 function displayConfirmNotification() {
-  var options = {
-      body: 'You successfully subscribed to our Notification Service'
-  };
-  new Notification('Successfully subscribed!', options);
+  if ('serviceWorker' in navigator) {
+    var options = {
+        body: 'You successfully subscribed to our Notification Service'
+    };
+    
+    navigator.serviceWorker.ready.then(function(swreg) {
+      swreg.showNotification(new Notification('Successfully subscribed! (fron SW)', options));
+    })
+  }
 }
