@@ -48,7 +48,13 @@ function askForNotificationPermission() {
 function displayConfirmNotification() {
   if ('serviceWorker' in navigator) {
     var options = {
-        body: 'You successfully subscribed to our Notification Service'
+        body: 'You successfully subscribed to our Notification Service',
+        icon: '/src/images/icons/app-icon-96x96.png',
+        image: '/src/images/sf-boat.jpg',
+        dir: 'rtl',
+        lang: 'en-US', // BCP 47
+        vibrate: [100, 50, 200],
+        badge: '/src/images/icons/app-icon-96x96.png'
     };
     
     navigator.serviceWorker.ready.then(function(swreg) {
