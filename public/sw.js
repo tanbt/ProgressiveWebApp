@@ -239,3 +239,18 @@ self.addEventListener('sync', function(event) {
     );
   }
 });
+
+self.addEventListener('notificationclick', function(event) {
+   var notification = event.notification;
+   var action = event.action;
+
+   console.log(notification);
+   if (action === 'confirm') {      // 'confirm' is action id from app.js
+       console.log("confirmed");
+   } else {
+       console.log(action);
+   }
+});
+self.addEventListener('notificationclose', function(event) {
+    console.log('Notification is closed without an action.', event)
+})
