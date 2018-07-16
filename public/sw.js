@@ -139,6 +139,7 @@ self.addEventListener('fetch', function(event) {
 
   // ONLY for the url which uses Cache-then-network strategy
   var url = 'https://pwagram-45678.firebaseio.com/posts.json';
+  var urlSubcr = 'https://pwagram-45678.firebaseio.com/subscriptions.json';
   if (event.request.url.indexOf(url) > -1) {
     event.respondWith(
       caches.open(CACHE_DYNAMIC_NAME)
@@ -164,6 +165,8 @@ self.addEventListener('fetch', function(event) {
         })
       })
     )
+  } else if (event.request.url.indexOf(urlSubcr) > -1) {
+      //event.respondWith(fetch(event.request));
   } else {  // OTHERWISE, use normal dynamic cache with offline page
     event.respondWith(
       caches.match(event.request) //auto-match by request object

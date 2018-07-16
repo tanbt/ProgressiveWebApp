@@ -2,6 +2,14 @@
 This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - Complete Guide" course on udemy.com.
 [Google PWA](https://developers.google.com/web/ilt/pwa/)
 
+# Commands:
+* npm install
+* change directory to *functions* folder, run `npm install`
+* at root directory, run `npm start`
+* at *functions* directory, run `npm run web-push generate-vapid-keys` to get notification subscription key.
+    update the publc key in app.js file, at `var vapidPublickey`
+*
+
 # How to Use
 You need [Node.js](https://nodejs.org) installed on your machine. Simply download the installer from [nodejs.org](https://nodejs.org) and go through the installation steps.
 
@@ -28,3 +36,5 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 
 ## External demo resourece
 * [API resource](https://httpbin.org/)
+* Firebase account: [tanbt@vaadin.com](https://console.firebase.google.com/u/1/project/pwagram-45678/database/pwagram-45678/data)
+
