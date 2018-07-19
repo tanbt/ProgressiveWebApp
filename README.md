@@ -2,17 +2,28 @@
 This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - Complete Guide" course on udemy.com.
 [Google PWA](https://developers.google.com/web/ilt/pwa/)
 
-# Commands:
-* npm install
-* change directory to *functions* folder, run `npm install`
-* at root directory, run `npm start`
-* at *functions* directory, run `npm run web-push generate-vapid-keys` to get notification subscription key.
-    update the publc key in app.js file, at `var vapidPublickey`
-*
+# To subscribe for push notification
+* Generate key for push notification
+  * at *functions* directory, run `npm run web-push generate-vapid-keys` to get public and private key
+  * update the public key in app.js file, at `var vapidPublickey`
+  * update the two keys in *functions/index.js*
+* To deploy firebase, update firebase.json
+  * on Windows: `npm --prefix %RESOURCE_DIR% run lint`
+  * on MacOS or Linux: `npm --prefix $RESOURCE_DIR run lint`
+  * on root folder, run `firebase login` then `firebase deploy`
+* Run the website, update notification permission to `Ask (default)`
+  * completely refresh the page (ctrl + shift + f5)
+  * click ENABLE NOTIFICATIONS button, click `Allow`
+  * check firebase Database to see if there's a new subscription
 
 # How to update firebase function
 * update the `index.js` file in *functions* folder
 * in root folder (parent folder of *functions* folder), run `firebase deploy` 
+
+# Commands:
+* npm install
+* change directory to *functions* folder, run `npm install`
+* at root directory, run `npm start`
 
 # How to Use
 You need [Node.js](https://nodejs.org) installed on your machine. Simply download the installer from [nodejs.org](https://nodejs.org) and go through the installation steps.

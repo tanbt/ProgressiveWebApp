@@ -26,7 +26,9 @@ exports.storePostData = functions.https.onRequest((req, res) => {
             image: req.body.image
         })
         .then(() => {
-            webpush.setVapidDetails('mailto:trungtanbui@gmail.com', 'BBXrTR9zlJLI3ikWgV2ssi4KUbyDZNAxg5byQjsdK6ymGX3Uj4XA1ottH6UIbtoV0EJQh_lo2QJdxiUOvI-h08I', 'tJ9nDceYoj9Id5mhKJK7D4LqvIO1pMJoeUGoXL-Ngt4');
+            webpush.setVapidDetails('mailto:trungtanbui@gmail.com',
+                'BIpkou9VB61jXIg_nfQzNNyTtCipd8bh0ZOybhHn145N2Rdj8dC1Vv0LbGEKg8icvyhsYQuWuACDhx7Ps7xEtQQ',
+                'Opjn-Waui1iN_TF-X3U03dxnvUmCGcHoOzbmPeLoKqM');
             return admin.database().ref('subscriptions').once('value');
         })
       .then((subscriptions) => {
@@ -50,4 +52,4 @@ exports.storePostData = functions.https.onRequest((req, res) => {
             res.status(500).json({error: err})
         });
     })
-})
+});

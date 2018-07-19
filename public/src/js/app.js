@@ -45,7 +45,7 @@ function configurePushSub() {
     }).then(function (sub) {
         if (sub === null) {
             // create a new subscription
-            var vapidPublickey = 'BBXrTR9zlJLI3ikWgV2ssi4KUbyDZNAxg5byQjsdK6ymGX3Uj4XA1ottH6UIbtoV0EJQh_lo2QJdxiUOvI-h08I';
+            var vapidPublickey = 'BIpkou9VB61jXIg_nfQzNNyTtCipd8bh0ZOybhHn145N2Rdj8dC1Vv0LbGEKg8icvyhsYQuWuACDhx7Ps7xEtQQ';
             var convertedVapidPublicKey = urlBase64ToUint8Array(vapidPublickey);
             return reg.pushManager.subscribe({
                 userVisibleOnly: true,
