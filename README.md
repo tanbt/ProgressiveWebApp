@@ -10,6 +10,10 @@ This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - 
     update the publc key in app.js file, at `var vapidPublickey`
 *
 
+# How to update firebase function
+* update the `index.js` file in *functions* folder
+* in root folder (parent folder of *functions* folder), run `firebase deploy` 
+
 # How to Use
 You need [Node.js](https://nodejs.org) installed on your machine. Simply download the installer from [nodejs.org](https://nodejs.org) and go through the installation steps.
 
@@ -29,9 +33,11 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * [Firebase Hosting](https://firebase.google.com/docs/hosting/deploying)
 
 ## Troubleshooting
+* In Windows, have to use Firebase CLI in `cmd`, not git bash 
 * Cannot install npm because of permision of writing cache
 ** MacOS: sudo chown -R root /cache/path
 * Cannot run *firebase deploy* because of *$RESOURCE_DIR*
+** Have to stay at root folder, instead of `functions` folder
 ** The path to project location contains special characters (e.g. whitespace)
 
 ## External demo resourece
