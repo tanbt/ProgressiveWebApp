@@ -247,11 +247,23 @@ self.addEventListener('notificationclick', function(event) {
    var notification = event.notification;
    var action = event.action;
 
-   console.log(notification);
+    console.log(action);
    if (action === 'confirm') {      // 'confirm' is action id from app.js
        console.log("confirmed");
    } else {
-       console.log(action);
+       event.waitUntil(
+           clients.matchAll().then((clis) => {
+               var client = clis.find((c) => {
+                   return c.visibilityState === 'visible';
+               });
+               if (client !== undefined) {
+                   client.navigate('http://localhost:8080');
+                   client.focus();
+               } else {
+                   client.openWindow('http://localhot:8080')
+               }
+           })
+       );
    }
 });
 self.addEventListener('notificationclose', function(event) {

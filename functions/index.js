@@ -13,8 +13,8 @@ var webpush = require('web-push');
 var serviceAccount = require("./pwagram-fbk.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://pwagram-45678.firebaseio.com"
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://pwagram-45678.firebaseio.com"
 });
 
 exports.storePostData = functions.https.onRequest((req, res) => {
@@ -25,31 +25,34 @@ exports.storePostData = functions.https.onRequest((req, res) => {
             location: req.body.location,
             image: req.body.image
         })
-        .then(() => {
-            webpush.setVapidDetails('mailto:trungtanbui@gmail.com',
-                'BIpkou9VB61jXIg_nfQzNNyTtCipd8bh0ZOybhHn145N2Rdj8dC1Vv0LbGEKg8icvyhsYQuWuACDhx7Ps7xEtQQ',
-                'Opjn-Waui1iN_TF-X3U03dxnvUmCGcHoOzbmPeLoKqM');
-            return admin.database().ref('subscriptions').once('value');
-        })
-      .then((subscriptions) => {
-        subscriptions.forEach((sub) => {
-          let pushConfig = {
-            endpoint: sub.val().endpoint,
-            keys: {
-                auth: sub.val().keys.auth,
-                p256dh: sub.val().keys.p256dh
-            }
-          };
-          webpush.sendNotification(pushConfig, JSON.stringify({title: 'New Post', content: 'New post added!'}))
+            .then(() => {
+                webpush.setVapidDetails('mailto:trungtanbui@gmail.com',
+                    'BIpkou9VB61jXIg_nfQzNNyTtCipd8bh0ZOybhHn145N2Rdj8dC1Vv0LbGEKg8icvyhsYQuWuACDhx7Ps7xEtQQ',
+                    'Opjn-Waui1iN_TF-X3U03dxnvUmCGcHoOzbmPeLoKqM');
+                return admin.database().ref('subscriptions').once('value');
+            })
+            .then((subscriptions) => {
+                subscriptions.forEach((sub) => {
+                    let pushConfig = {
+                        endpoint: sub.val().endpoint,
+                        keys: {
+                            auth: sub.val().keys.auth,
+                            p256dh: sub.val().keys.p256dh
+                        }
+                    };
+                    webpush.sendNotification(pushConfig, JSON.stringify({
+                        title: 'New Post',
+                        content: 'New post added!'
+                    }))
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                });
+                res.status(201).json({message: 'Data stored', id: req.body.id});
+                return null;
+            })
             .catch((err) => {
-                console.log(err);
+                res.status(500).json({error: err})
             });
-        });
-        res.status(201).json({message: 'Data stored', id: req.body.id});
-        return null;
-      })
-        .catch((err) => {
-            res.status(500).json({error: err})
-        });
     })
 });
