@@ -5,12 +5,47 @@ var sharedMomentsArea = document.querySelector('#shared-moments');
 var form = document.querySelector('form');  // the only form
 var titleInput = document.querySelector('#title');
 var locationInput = document.querySelector('#location');
+var videoPlayer = document.querySelector('#player');
+var canvasElement = document.querySelector('#canvas');
+var capturebutton = document.querySelector('#capture-btn');
+var imagePicker = document.querySelector('#image-picker');
+var imagePickerArea = document.querySelector('#pick-image');
+
+function initializeMedia() {
+  if (!('mediaDevices' in navigator)) {
+    navigator.mediaDevices = {};
+  }
+  if (!('getUserMedia' in navigator.mediaDevices)) {
+    navigator.mediaDevices.getUserMedia = function(constraints) {
+      var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      if (!getUserMedia) {
+        return Promise.reject(new Error('getUserMedia is not implememented'));
+      }
+
+      return new Promise(function(res, rej) {
+        getUserMedia.call(navigator, constraints, res, rej);
+      });
+    }
+  }
+
+  navigator.mediaDevices.getUserMedia({video: true})
+    .then(function(stream) {
+      videoPlayer.srcObject = stream;
+      videoPlayer.style.display = "block";
+      imagePickerArea.style.display = 'none';
+    })
+    .caches(function(err){
+      imagePickerArea.style.display = 'block';
+      videoPlayer.style.display = "none";
+    });
+}
 
 function openCreatePostModal() {
-  setTimeout(function() {
+  //setTimeout(function() {
     createPostArea.style.transform = 'translateY(0)';
     createPostArea.style.transittion = 'transform 0.3s';
-  }, 1);
+    initializeMedia();
+  //}, 1);
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function(choiceResult) {
