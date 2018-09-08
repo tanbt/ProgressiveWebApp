@@ -50,6 +50,7 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * Cannot run *firebase deploy* because of *$RESOURCE_DIR*
 ** Have to stay at root folder, instead of `functions` folder
 ** The path to project location contains special characters (e.g. whitespace)
+** in Windows, it's `%RESOURCE_DIR%`, in MacOS or Linux, it's `$RESOURCE_DIR`
 
 ## External demo resourece
 * [API resource](https://httpbin.org/)

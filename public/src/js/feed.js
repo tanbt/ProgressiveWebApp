@@ -10,6 +10,7 @@ var canvasElement = document.querySelector('#canvas');
 var captureButton = document.querySelector('#capture-btn');
 var imagePicker = document.querySelector('#image-picker');
 var imagePickerArea = document.querySelector('#pick-image');
+var picture;
 
 function initializeMedia() {
   if (!('mediaDevices' in navigator)) {
@@ -49,6 +50,7 @@ captureButton.addEventListener('click', function(event) {
   videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
     track.stop();
   });
+  picture = dataURItoBlob(canvasElement.toDataURL());
 });
 
 function openCreatePostModal() {
@@ -198,6 +200,7 @@ form.addEventListener('submit', function(event) {
           id: new Date().toISOString(),
           title: titleInput.value,
           location: locationInput.value,
+          picture: picture
         };
         writeData('sync-posts', post)
           .then(function(){
@@ -218,18 +221,15 @@ form.addEventListener('submit', function(event) {
 });
 
 function sendData() {
+  var postData = new FormData();
+  var id = new Date().toISOString();
+  postData.append('id', id);
+  postData.append('title', titleInput.value);
+  postData.append('location', locationInput.value);
+  postData.append('file', picture, id + '.png');
   fetch('https://us-central1-pwagram-45678.cloudfunctions.net/storePostData', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({
-      id: new Date().toISOString(),
-        title: titleInput.value,
-        location: locationInput.value,
-        image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/my-dog.jpg?alt=media&token=c1a8f283-e807-4acf-80c8-32b307a1e4f1'
-    })
+    body: postData
   })
   .then(function(res) {
     console.log('Sent data: ', res);

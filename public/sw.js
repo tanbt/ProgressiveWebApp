@@ -210,18 +210,15 @@ self.addEventListener('sync', function (event) {
             readAllData('sync-posts')
                 .then(function (data) {
                     data.forEach(dt => {
+                        var postData = new FormData();
+                        postData.append('id', dt.id);
+                        postData.append('title', dt.title);
+                        postData.append('location', dt.location);
+                        postData.append('file', dt.picture, dt.id + '.png');
+
                         fetch('https://us-central1-pwagram-45678.cloudfunctions.net/storePostData', {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                id: dt.id,
-                                title: dt.title,
-                                location: dt.location,
-                                image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-45678.appspot.com/o/my-dog.jpg?alt=media&token=c1a8f283-e807-4acf-80c8-32b307a1e4f1'
-                            })
+                            body: postData
                         })
                             .then(function (res) {
                                 console.log('Sent data');
