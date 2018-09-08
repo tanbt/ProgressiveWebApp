@@ -35,7 +35,7 @@ function initializeMedia() {
       videoPlayer.style.display = 'block';
       imagePickerArea.style.display = 'none';
     })
-    .caches(function(err){
+    .catch(function(err){
       imagePickerArea.style.display = 'block';
       videoPlayer.style.display = "none";
     });
@@ -51,6 +51,10 @@ captureButton.addEventListener('click', function(event) {
     track.stop();
   });
   picture = dataURItoBlob(canvasElement.toDataURL());
+});
+
+imagePicker.addEventListener('change', (e) => {
+  picture = event.target.files[0];
 });
 
 function openCreatePostModal() {
@@ -76,7 +80,7 @@ function openCreatePostModal() {
 function closeCreatePostModal() {
   createPostArea.style.transform = 'translateY(100vh)';
   createPostArea.style.transittion = 'transform 0.2s';
-  if (videoPlayer) {
+  if (videoPlayer && videoPlayer.srcObject) {
     videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
       track.stop();
     });
