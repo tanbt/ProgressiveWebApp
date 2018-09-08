@@ -11,6 +11,37 @@ var captureButton = document.querySelector('#capture-btn');
 var imagePicker = document.querySelector('#image-picker');
 var imagePickerArea = document.querySelector('#pick-image');
 var picture;
+var locationBtn = document.querySelector('#location-btn');
+var locationLoader = document.querySelector('#location-loader');
+var fetchLocation;
+
+locationBtn.addEventListener('click', (e) => {
+  if(!('geolocation' in navigator)) {
+    return;
+  }
+  locationBtn.style.display = 'none';
+  locationLoader.style.display = 'block';
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    locationBtn.style.display = 'inline';
+    locationLoader.style.display = 'none';
+    fetchLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
+    locationInput.value = 'In Turku'; // can be fetched with google api
+    document.querySelector('#manual-location').classList.add('is-focused');
+  }, (err) => {
+    console.log(err);
+    locationBtn.style.display = 'inline';
+    locationLoader.style.display = 'none';
+    alert('Couldn\'t fetch location. Please enter manually.');
+    fetchLocation = {lat: 0, lng: 0};
+  }, {timeout: 7000});
+});
+
+function initializeLocation() {
+  if(!('geolocation' in navigator)) {
+    locationBtn.style.display = 'none';
+  }
+}
 
 function initializeMedia() {
   if (!('mediaDevices' in navigator)) {
@@ -38,6 +69,7 @@ function initializeMedia() {
     .catch(function(err){
       imagePickerArea.style.display = 'block';
       videoPlayer.style.display = "none";
+      captureButton.style.display = 'none';
     });
 }
 
@@ -62,6 +94,7 @@ function openCreatePostModal() {
     createPostArea.style.transform = 'translateY(0)';
     createPostArea.style.transittion = 'transform 0.3s';
     initializeMedia();
+    initializeLocation();
   //}, 1);
   if (deferredPrompt) {
     deferredPrompt.prompt();
@@ -80,6 +113,10 @@ function openCreatePostModal() {
 function closeCreatePostModal() {
   createPostArea.style.transform = 'translateY(100vh)';
   createPostArea.style.transittion = 'transform 0.2s';
+  captureButton.style.display = 'inline';
+  canvasElement.style.display = 'none';
+  locationBtn.style.display = 'inline';
+  locationLoader.style.display = 'none';
   if (videoPlayer && videoPlayer.srcObject) {
     videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
       track.stop();
@@ -195,6 +232,10 @@ form.addEventListener('submit', function(event) {
     alert('Please enter valid data.')
     return;
   }
+  if (!picture) {
+    alert('Please take a picture or select a picture');
+    return;
+  }
 
   closeCreatePostModal();
   if ('serviceWorker' in navigator && 'SyncManager' in window) {
@@ -204,7 +245,8 @@ form.addEventListener('submit', function(event) {
           id: new Date().toISOString(),
           title: titleInput.value,
           location: locationInput.value,
-          picture: picture
+          picture: picture,
+          rawLocation: fetchLocation
         };
         writeData('sync-posts', post)
           .then(function(){
@@ -230,7 +272,10 @@ function sendData() {
   postData.append('id', id);
   postData.append('title', titleInput.value);
   postData.append('location', locationInput.value);
+  postData.append('rawLocationLat', fetchLocation.lat);
+  postData.append('rawLocationLng', fetchLocation.lng);
   postData.append('file', picture, id + '.png');
+
   fetch('https://us-central1-pwagram-45678.cloudfunctions.net/storePostData', {
     method: 'POST',
     body: postData
