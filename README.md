@@ -26,9 +26,10 @@ This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - 
 * at root directory, run `npm start`
 
 # How to Use
-You need [Node.js](https://nodejs.org) installed on your machine. Simply download the installer from [nodejs.org](https://nodejs.org) and go through the installation steps.
-
-Once Node.js is installed, open your command prompt or terminal and **navigate into this project folder**. There, run `npm install` to install all required dependencies.
+* Install [Node.js](https://nodejs.org)
+* At root directory, open comnand line (terminal) run `npm install`
+  * For development, run `npm install` for **functions** directory also
+* At root directory, run `npm run wb-generate` to re-generate public/service-worker.js file
 
 Finally, run `npm start` to start the development server and visit [localhost:8080](http://localhost:8080) to see the running application.
 
@@ -42,6 +43,7 @@ Finally, run `npm start` to start the development server and visit [localhost:80
 * [Wrap IndexDB into Promise](https://github.com/jakearchibald/idb)
 * [Loading responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 * [Firebase Hosting](https://firebase.google.com/docs/hosting/deploying)
+* [Google Workbox CLI](https://developers.google.com/web/tools/workbox/modules/workbox-cli)
 
 ## Troubleshooting
 * In Windows, have to use Firebase CLI in `cmd`, not git bash 

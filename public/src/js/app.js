@@ -7,7 +7,7 @@ if (!window.Promise) {
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register('/sw.js', {scope: '/'})
+        .register('/service-worker.js', {scope: '/'})
         .then(function () {
             //this log could be render before registration finishes (non-blocking)
             console.log('Service Worker registered!');
