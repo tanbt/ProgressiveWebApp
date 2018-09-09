@@ -212,10 +212,57 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "sw-base.js",
-    "revision": "ea45fda463be617fbd72b4838cf31f74"
+    "revision": "43477af5667e0eb2dd6e8762fa57082f"
   },
   {
     "url": "sw.js",
     "revision": "2e25ad642a4600a4d3ebb9095ecdfa96"
   }
 ]);
+
+/**
+ * Trigger when the connection is re-established
+ *  or when a 'sync' is registered
+ */
+/**
+ * Trigger when the connection is re-established
+ *  or when a 'sync' is registered
+ */
+self.addEventListener('sync', function (event) {
+    console.log('[SW] Background syncing', event);
+    if (event.tag === 'sync-new-post') {
+        console.log('[SW] Syncing new post...');
+        event.waitUntil(
+            readAllData('sync-posts')
+                .then(function (data) {
+                    data.forEach(dt => {
+                        var postData = new FormData();
+                        postData.append('id', dt.id);
+                        postData.append('title', dt.title);
+                        postData.append('location', dt.location);
+                        postData.append('rawLocationLat', dt.rawLocation.lat);
+                        postData.append('rawLocationLng', dt.rawLocation.lng);
+                        postData.append('file', dt.picture, dt.id + '.png');
+
+                        fetch('https://us-central1-pwagram-45678.cloudfunctions.net/storePostData', {
+                            method: 'POST',
+                            body: postData
+                        })
+                            .then(function (res) {
+                                console.log('Sent data');
+                                if (res.ok) {
+                                    res.json()
+                                        .then(function (resData) {
+                                            console.log(resData);
+                                            removeItemById('sync-posts', resData.id);
+                                        })
+                                }
+                            })
+                            .catch(function (err) {
+                                console.log('Error while sending data: ', err);
+                            })
+                    });
+                })
+        );
+    }
+});
