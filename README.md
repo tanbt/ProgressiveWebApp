@@ -29,7 +29,7 @@ This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - 
 * Install [Node.js](https://nodejs.org)
 * At root directory, open comnand line (terminal) run `npm install`
   * For development, run `npm install` for **functions** directory also
-* At root directory, run `npm run wb-generate` to re-generate public/service-worker.js file
+* At root directory, run `npm run wb-inject` to update public/service-worker.js file
 
 Finally, run `npm start` to start the development server and visit [localhost:8080](http://localhost:8080) to see the running application.
 
