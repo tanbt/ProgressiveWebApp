@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server -c-1",
+    "minify": "uglifyjs public/src/js/app.js -o public/src/js/app.min.js --compress --mangle",
     "wb-config": "workbox wizard",
-    "wb-inject": "workbox injectManifest workbox-config.js"
+    "wb-inject": "workbox injectManifest workbox-config.js",
+    "build": "npm run minify && npm run wb-inject"
   },
   "keywords": [
     "pwa",
@@ -20,7 +22,8 @@
   "license": "ISC",
   "devDependencies": {
     "firebase-tools": "^3.17.4",
-    "http-server": "^0.10.0"
+    "http-server": "^0.10.0",
+    "uglify-js": "^3.4.9"
   },
   "dependencies": {
     "workbox-cli": "^3.4.1"
