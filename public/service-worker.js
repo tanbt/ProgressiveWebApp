@@ -1,7 +1,11 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
 
-workbox.routing.registerRoute(new RegExp('.*(?:googleapis|gstatic)\.com.*$'), workbox.strategies.staleWhileRevalidate(
+workbox.routing.registerRoute(new RegExp('.*(?:gstatic)\.com.*$'), workbox.strategies.staleWhileRevalidate(
     {cacheName: 'google-fonts'}
+));
+
+workbox.routing.registerRoute(new RegExp('.*(?:googleapis)\.com.*$'), workbox.strategies.staleWhileRevalidate(
+    {cacheName: 'post-resource'}
 ));
 
 workbox.precaching.suppressWarnings();
@@ -152,7 +156,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "sw-base.js",
-    "revision": "b3303fec8a8c265de7dd136e59f47a28"
+    "revision": "fe0afc5679f40c17aecbcf4c891d9771"
   },
   {
     "url": "sw.js",
