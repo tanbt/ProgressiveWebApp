@@ -29,7 +29,8 @@ This source code is part of Maximilian Schwarzmüller's "Progressive Web Apps - 
 * Install [Node.js](https://nodejs.org)
 * At root directory, open comnand line (terminal) run `npm install`
   * For development, run `npm install` for **functions** directory also
-* At root directory, run `npm run wb-inject` to update public/service-worker.js file
+* At root directory, run `npm run build` to update public/service-worker.js file and minify js files
+* At root directory, `firebase deploy` to publish the project to firebase at https://pwagram-45678.firebaseapp.com
 
 Finally, run `npm start` to start the development server and visit [localhost:8080](http://localhost:8080) to see the running application.
 
