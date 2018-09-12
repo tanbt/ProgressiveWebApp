@@ -13,7 +13,12 @@ npm start
 * compile the app and build it, inside the app root folder, run:
 ```
 npm run eject
+npm install babel-loader
+npm install
 npm run build
+
+npm install -g serve
+serve -s build
 ```
 
 ### References
